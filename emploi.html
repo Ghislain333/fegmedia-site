@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offres d'emploi - FEGMEDIA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles spécifiques au Job Board FEGMEDIA */
+        .hero-section {
+            text-align: center;
+            padding: 3.5rem 1rem 2.5rem 1rem;
+            background: linear-gradient(180deg, rgba(255,71,87,0.12) 0%, rgba(11,12,16,1) 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .hero-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .hero-subtitle {
+            color: var(--text-muted, #a0a0a0);
+            max-width: 600px;
+            margin: 0 auto 1.8rem auto;
+            font-size: 1.05rem;
+        }
+
+        /* Barre de Recherche et Filtres */
+        .filter-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-input, .filter-select {
+            padding: 0.85rem 1.1rem;
+            background: #181a20;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-input:focus, .filter-select:focus {
+            border-color: var(--accent-color, #ff4757);
+        }
+
+        .search-input {
+            flex: 2;
+            min-width: 240px;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        /* Liste des cartes d'offres */
+        .jobs-wrapper {
+            max-width: 900px;
+            margin: 2rem auto 5rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .job-card {
+            background: #14151a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+        }
+
+        .job-card:hover {
+            border-color: rgba(255, 71, 87, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0.4rem 0 0.4rem 0;
+            line-height: 1.3;
+        }
+
+        .job-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            color: #a0a0a0;
+            font-size: 0.88rem;
+        }
+
+        .job-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .badge-category {
+            background: rgba(255, 71, 87, 0.15);
+            color: #ff4757;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .badge-type {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ddd;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .job-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 0.2rem;
+        }
+
+        .btn-apply {
+            background: var(--accent-color, #ff4757);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.65rem 1.3rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-apply:hover {
+            background: #e03847;
+        }
+
+        .btn-toggle-desc {
+            background: transparent;
+            border: none;
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0.4rem 0;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+
+        .btn-toggle-desc:hover {
+            color: #fff;
+        }
+
+        .job-description {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            color: #ccc;
+            font-size: 0.93rem;
+            line-height: 1.6;
+            white-space: pre-line;
+            display: none; /* Masqué par défaut pour un design épuré */
+        }
+
+        .job-description.open {
+            display: block;
+        }
+
+        .no-jobs {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: #14151a;
+            border-radius: 12px;
+            border: 1px dashed rgba(255,255,255,0.1);
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- En-tête -->
+    <header class="site-header">
+        <a href="index.html" class="logo" style="font-family: 'Anton'; font-size: 1.8rem; color: #fff; text-decoration: none;">FEG<span style="color: var(--accent-color, #ff4757);">MEDIA</span></a>
+        <nav class="desktop-nav">
+            <ul style="display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0;">
+                <li><a href="index.html" style="color: #fff; text-decoration: none;">Accueil</a></li>
+                <li><a href="emploi.html" style="color: var(--accent-color, #ff4757); text-decoration: none; font-weight: bold;">Emplois</a></li>
+                <li><a href="a-propos.html" style="color: #fff; text-decoration: none;">À propos</a></li>
+                <li><a href="contact.html" style="color: #fff; text-decoration: none;">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Bannière Hero & Recherche -->
+    <section class="hero-section">
+        <h1 class="hero-title">OFFRES D'EMPLOI & OPPORTUNITÉS</h1>
+        <p class="hero-subtitle">Trouvez le poste qui correspond à vos compétences parmi nos opportunités vérifiées.</p>
+
+        <!-- Filtres -->
+        <div class="filter-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Rechercher par poste, entreprise, ville...">
+            <select id="category-filter" class="filter-select">
+                <option value="ALL">Toutes les catégories</option>
+                <option value="Commerce & Vente">Commerce & Vente</option>
+                <option value="Marketing & Com">Marketing & Com</option>
+                <option value="Tech & Informatique">Tech & Informatique</option>
+                <option value="Finance & Comptabilité">Finance & Comptabilité</option>
+                <option value="Santé & Médical">Santé & Médical</option>
+                <option value="Éducation & Formation">Éducation & Formation</option>
+                <option value="Logistique & Transport">Logistique & Transport</option>
+                <option value="Droit & Admin">Droit & Admin</option>
+                <option value="Autre">Autre domaine</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Liste des offres -->
+    <main class="jobs-wrapper">
+        <div id="jobs-container">
+            <div class="no-jobs">
+                <p>Chargement des offres d'emploi en cours...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Nav Mobile -->
+    <nav class="bottom-nav">
+        <a href="index.html">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Accueil</span>
+        </a>
+        <a href="emploi.html" class="active">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+            <span>Emplois</span>
+        </a>
+        <a href="a-propos.html">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>À propos</span>
+        </a>
+        <a href="contact.html">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span>Contact</span>
+        </a>
+    </nav>
+
+    <script>
+        // Suivi des visites
+        fetch('api/track_visit.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ page: window.location.pathname })
+        }).catch(err => console.error(err));
+
+        let allJobs = [];
+
+        // Chargement des données
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchJobs();
+
+            // Événements Filtres
+            document.getElementById('search-input').addEventListener('input', filterAndRenderJobs);
+            document.getElementById('category-filter').addEventListener('change', filterAndRenderJobs);
+        });
+
+        async function fetchJobs() {
+            const container = document.getElementById('jobs-container');
+            try {
+                const res = await fetch('api/get_jobs.php');
+                const result = await res.json();
+
+                if (result.status === 'success' && result.data.length > 0) {
+                    allJobs = result.data;
+                    filterAndRenderJobs();
+                } else {
+                    container.innerHTML = `
+                        <div class="no-jobs">
+                            <h3>Aucune offre disponible</h3>
+                            <p>Revenez bientôt pour de nouvelles opportunités d'emploi.</p>
+                        </div>`;
+                }
+            } catch (e) {
+                container.innerHTML = `
+                    <div class="no-jobs" style="border-color: rgba(255,71,87,0.3);">
+                        <p style="color: #ff4757;">Impossible de charger les offres pour le moment.</p>
+                    </div>`;
+            }
+        }
+
+        function filterAndRenderJobs() {
+            const container = document.getElementById('jobs-container');
+            const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+            const catVal = document.getElementById('category-filter').value;
+
+            const filtered = allJobs.filter(job => {
+                const matchesSearch = job.title.toLowerCase().includes(searchVal) || 
+                                      job.company.toLowerCase().includes(searchVal) || 
+                                      job.location.toLowerCase().includes(searchVal);
+                
+                const matchesCat = (catVal === 'ALL') || (job.category === catVal);
+
+                return matchesSearch && matchesCat;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="no-jobs">
+                        <p>Aucune offre ne correspond à vos critères de recherche.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            filtered.forEach(job => {
+                const applyLink = job.apply_url_or_email.includes('@') 
+                    ? `mailto:${job.apply_url_or_email}?subject=Candidature: ${encodeURIComponent(job.title)}` 
+                    : job.apply_url_or_email;
+
+                const card = document.createElement('div');
+                card.className = 'job-card';
+
+                card.innerHTML = `
+                    <div class="job-header">
+                        <div style="flex: 1; min-width: 250px;">
+                            <span class="badge-category">${job.category || 'Général'}</span>
+                            <h2 class="job-title">${job.title}</h2>
+                            <div class="job-meta">
+                                <span><strong style="color:#fff;">${job.company}</strong></span>
+                                <span>•</span>
+                                <span>📍 ${job.location}</span>
+                                <span>•</span>
+                                <span class="badge-type">${job.type}</span>
+                            </div>
+                        </div>
+
+                        <div class="job-actions">
+                            <a href="${applyLink}" target="_blank" rel="noopener" class="btn-apply">
+                                Postuler
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 0.8rem;">
+                        <button class="btn-toggle-desc" onclick="toggleDescription(this)">Afficher les détails / missions ↓</button>
+                        <div class="job-description">
+                            ${job.description}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function toggleDescription(btn) {
+            const desc = btn.nextElementSibling;
+            if (desc.classList.contains('open')) {
+                desc.classList.remove('open');
+                btn.textContent = 'Afficher les détails / missions ↓';
+            } else {
+                desc.classList.add('open');
+                btn.textContent = 'Masquer les détails ↑';
+            }
+        }
+    </script>
+</body>
+</html>

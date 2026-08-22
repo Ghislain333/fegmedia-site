@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEGMEDIA - Tech, Finance & Entrepreneuriat</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- En-tête -->
+    <header>
+        <a href="index.html" class="logo">FEG<span>MEDIA</span></a>
+        <nav>
+            <a href="index.html" class="active">Accueil</a>
+            <a href="emploi.html">Emplois</a>
+            <a href="a-propos.html">À propos</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Section d'accueil -->
+    <main class="container">
+        <section class="hero">
+            <h1>L'ACTUALITÉ TECH & FINANCE EN AFRIQUE</h1>
+            <p>Analyses, innovations et opportunités d'entrepreneuriat au Cameroun et sur le continent.</p>
+        </section>
+
+        <!-- Liste des articles avec Filtres -->
+        <section>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                <h2 class="section-title" style="margin-bottom: 0;">Dernières Publications</h2>
+                
+                <!-- Boutons de filtrage -->
+                <div id="filter-buttons" style="display: flex; gap: 0.5rem;">
+                    <button class="filter-btn active" data-category="ALL">Tous</button>
+                    <button class="filter-btn" data-category="TECH">Tech</button>
+                    <button class="filter-btn" data-category="FINANCE">Finance</button>
+                    <button class="filter-btn" data-category="ENTREPRENEURIAT">Entrepreneuriat</button>
+                </div>
+            </div>
+
+            <div id="articles-container" class="articles-grid">
+                <p>Chargement des contenus...</p>
+            </div>
+        </section>
+
+        <!-- Section Offres d'Emploi Récentes -->
+        <section style="margin-top: 3rem; padding: 1.5rem; background: #14151a; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="font-size: 1.3rem; margin: 0; color: #fff;">OFFRES D'EMPLOI RÉCENTES</h2>
+                <a href="emploi.html" style="color: var(--accent-color, #ff4757); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Voir tout →</a>
+            </div>
+            <div id="home-jobs-list">
+                <p style="color: #888; font-size: 0.9rem;">Chargement des offres...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto;">
+            <p>&copy; 2026 FEGMEDIA. Tous droits réservés.</p>
+            <a href="admin/login.html" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none;">Espace Admin</a>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Tracking visite
+        fetch('api/track_visit.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ page: window.location.pathname })
+        }).catch(err => console.error(err));
+
+        // Chargement des 2 dernières offres d'emploi
+        fetch('api/get_jobs.php')
+            .then(res => res.json())
+            .then(result => {
+                const container = document.getElementById('home-jobs-list');
+                if (result.status === 'success' && result.data.length > 0) {
+                    container.innerHTML = '';
+                    result.data.slice(0, 2).forEach(job => {
+                        const item = document.createElement('div');
+                        item.style.cssText = 'padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; gap: 1rem;';
+                        item.innerHTML = `
+                            <div>
+                                <strong style="color: #fff; display: block; font-size: 0.95rem;">${job.title}</strong>
+                                <div style="font-size: 0.8rem; color: #888;">${job.company} • ${job.location}</div>
+                            </div>
+                            <a href="emploi.html" style="background: rgba(255,71,87,0.15); color: #ff4757; padding: 0.4rem 0.8rem; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-weight: bold; white-space: nowrap;">Postuler</a>
+                        `;
+                        container.appendChild(item);
+                    });
+                } else {
+                    container.innerHTML = '<p style="color: #888; font-size: 0.9rem;">Aucune offre disponible actuellement.</p>';
+                }
+            }).catch(() => {
+                document.getElementById('home-jobs-list').innerHTML = '<p style="color: #888; font-size: 0.9rem;">Impossible de charger les offres.</p>';
+            });
+    </script>
+
+    <!-- Navigation Mobile Bottom Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="active">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Accueil</span>
+        </a>
+        <a href="emploi.html">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+            <span>Emplois</span>
+        </a>
+        <a href="a-propos.html">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>À propos</span>
+        </a>
+        <a href="contact.html">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span>Contact</span>
+        </a>
+    </nav>
+</body>
+</html>

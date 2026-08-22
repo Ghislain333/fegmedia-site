@@ -1,0 +1,398 @@
+/* Importation des polices Anton et Montserrat depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600;700&display=swap');
+
+:root {
+    --primary-color: #2E5BFF;
+    --accent-color: #F5A623;
+    --bg-dark: #121212;
+    --bg-card: #1E1E2E;
+    --text-light: #F8F9FA;
+    --text-muted: #A0A0A0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* En-tête / Header */
+header {
+    background-color: rgba(18, 18, 18, 0.95);
+    border-bottom: 2px solid var(--primary-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    color: var(--text-light);
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--accent-color);
+}
+
+nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+nav a:hover, nav a.active {
+    color: var(--primary-color);
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.hero {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #1E1E2E 0%, #2E5BFF 100%);
+    border-radius: 12px;
+    margin-bottom: 3rem;
+}
+
+.hero h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Grille des articles */
+.section-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 0.5rem;
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.article-card {
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(46, 91, 255, 0.2);
+}
+
+.article-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.article-content {
+    padding: 1.2rem;
+}
+
+.badge {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.article-content h3 {
+    margin: 0.8rem 0;
+    font-size: 1.2rem;
+}
+
+.article-content p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Pied de page */
+footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid #222;
+    margin-top: 4rem;
+    color: var(--text-muted);
+}
+/* Boutons de filtres sur l'accueil */
+.filter-btn {
+    background-color: var(--bg-card);
+    color: var(--text-light);
+    border: 1px solid #333;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+/* --- REGLES DE BASE RESPONSIVE --- */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* --- ADAPTATIONS TABLETTES ET MOBILES (Max 768px) --- */
+@media (max-width: 768px) {
+
+    /* Layout & Navigation */
+    header, nav {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+
+    /* Grilles d'articles (Passage en 1 colonne) */
+    .articles-grid, 
+    .grid-container,
+    #articles-list {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+
+    /* Typographie adaptée aux petits écrans */
+    h1 {
+        font-size: 1.8rem !important;
+    }
+    h2 {
+        font-size: 1.4rem !important;
+    }
+
+    /* Filtres par catégories */
+    .categories-filter {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .categories-filter button {
+        flex: 0 0 auto;
+    }
+
+    /* Dashboard Admin - Cartes & Modale */
+    section {
+        padding: 1rem !important;
+    }
+
+    #edit-modal > div {
+        width: 95% !important;
+        padding: 1.2rem !important;
+    }
+
+    /* Formulaires de contact et d'édition */
+    form input, form select, form textarea {
+        font-size: 16px !important; /* Évite le zoom automatique gênant sur iPhone/iOS */
+    }
+}
+/* ==========================================================================
+   DESIGN MOBILE PREMIUM & MODERN (Mobile-First Enhancements)
+   ========================================================================== */
+
+/* Améliorations globales */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    padding-bottom: 70px; /* Espace réservé pour la barre de navigation du bas sur mobile */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #0b0c10;
+    color: #e0e0e0;
+}
+
+/* Header & Nav Desktop de base */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background-color: rgba(11, 12, 16, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Bottom Navigation Bar (Visible uniquement sur Mobile) */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: rgba(18, 18, 22, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.bottom-nav a {
+    color: var(--text-muted, #888);
+    text-decoration: none;
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    transition: color 0.2s ease;
+}
+
+.bottom-nav a.active, .bottom-nav a:hover {
+    color: var(--accent-color, #ff4757);
+}
+
+.bottom-nav svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* Mobile Responsive Adjustments (Max 768px) */
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+    }
+
+    /* Masquer le menu classique du header sur mobile */
+    .desktop-nav {
+        display: none;
+    }
+
+    /* Catégories défilables au pouce */
+    .categories-filter {
+        display: flex;
+        gap: 0.6rem;
+        overflow-x: auto;
+        padding: 0.8rem 1rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Masque la barre de défilement */
+    }
+
+    .categories-filter::-webkit-scrollbar {
+        display: none;
+    }
+
+    .categories-filter button {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        padding: 0.5rem 1.2rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #18191e;
+        color: #bbb;
+        transition: all 0.25s ease;
+    }
+
+    .categories-filter button.active {
+        background: var(--accent-color, #ff4757);
+        color: #fff;
+        border-color: var(--accent-color, #ff4757);
+        box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+    }
+
+    /* Grille d'articles style carte moderne */
+    .articles-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.2rem !important;
+        padding: 0 1rem;
+    }
+
+    .article-card {
+        background: #14151a;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .article-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .article-card-content {
+        padding: 1rem;
+    }
+
+    .article-card h3 {
+        font-size: 1.15rem;
+        line-height: 1.4;
+        margin: 0.4rem 0 0.6rem 0;
+        font-weight: 700;
+    }
+
+    /* Adaptations pour les formulaires sur mobile */
+    input, select, textarea {
+        font-size: 16px !important; /* Empêche le zoom automatique forcé sur iOS */
+        border-radius: 8px !important;
+    }
+}

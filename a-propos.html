@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - FEGMEDIA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .about-hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+        .about-hero h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+        .about-hero p {
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .value-card {
+            background-color: var(--bg-card);
+            padding: 1.8rem;
+            border-radius: 8px;
+            border-top: 3px solid var(--primary-color);
+        }
+        .value-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 0.8rem;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background-color: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .stat-item h2 {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">FEG<span>MEDIA</span></a>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="a-propos.html" class="active">À propos</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Section d'introduction -->
+        <section class="about-hero">
+            <h1>Propulser l'Innovation & l'Économie</h1>
+            <p>
+                FEGMEDIA est la plateforme d'information de référence dédiée à l'actualité Tech, 
+                aux stratégies Financières et à l'Écosystème Entrepreneuriat au Cameroun et en Afrique.
+            </p>
+        </section>
+
+        <!-- Piliers & Missions -->
+        <section>
+            <h2 class="section-title">Nos Piliers Éditoriaux</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <h3>⚡ Tech & Innovation</h3>
+                    <p>
+                        Décryptage des tendances technologiques, de la transformation digitale 
+                        et des startups qui façonnent le futur du continent.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <h3>📈 Finance & Marchés</h3>
+                    <p>
+                        Analyses économiques, conseils en gestion d'investissements et actualités 
+                        des marchés financiers accessibles à tous.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <h3>🚀 Entrepreneuriat</h3>
+                    <p>
+                        Mise en lumière des fondateurs, guides pratiques et retours d'expérience 
+                        pour accompagner les bâtisseurs de demain.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision -->
+        <section style="margin-top: 4rem;">
+            <div style="background-color: var(--bg-card); padding: 2.5rem; border-radius: 8px;">
+                <h2 style="font-family: 'Anton'; margin-bottom: 1rem;">Notre Vision</h2>
+                <p style="color: var(--text-light); line-height: 1.8;">
+                    Nous croyons fermement que l'accès à une information précise et à forte valeur ajoutée 
+                    est la clé de voûte de la réussite économique. FEGMEDIA s'engage à fournir du contenu analytique, 
+                    impartial et orienté vers l'action pour soutenir les décideurs, investisseurs et jeunes entrepreneurs.
+                </p>
+            </div>
+        </section>
+
+        <!-- Impact -->
+        <div class="stats-container">
+            <div class="stat-item">
+                <h2>3</h2>
+                <p style="color: var(--text-muted);">Secteurs Clés</p>
+            </div>
+            <div class="stat-item">
+                <h2>100%</h2>
+                <p style="color: var(--text-muted);">Orienté Solutions</p>
+            </div>
+            <div class="stat-item">
+                <h2>24/7</h2>
+                <p style="color: var(--text-muted);">Veille Stratégique</p>
+            </div>
+        </div>
+    </main>
+  
+
+    <footer>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 1rem;">
+            <p>&copy; 2026 FEGMEDIA. Tous droits réservés.</p>
+            <a href="admin/login.html" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none;">Espace Admin</a>
+        </div>
+    </footer>
+<script>
+    fetch('api/track_visit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page: window.location.pathname })
+    }).catch(err => console.error(err));
+</script>
+
+<!-- Barre de Navigation Mobile Fixe (Bottom Bar) -->
+<nav class="bottom-nav">
+    <a href="index.html" class="active">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Accueil</span>
+    </a>
+    <a href="a-propos.html">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <span>À propos</span>
+    </a>
+    <a href="contact.html">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <span>Contact</span>
+    </a>
+</nav>
+</body>
+</html>

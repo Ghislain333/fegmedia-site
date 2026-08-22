@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEGMEDIA - Dashboard Admin</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .card-form {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background-color: #121212;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="logo">FEG<span>MEDIA</span> - Admin</a>
+        <div>
+            <span id="user-email" style="margin-right: 1rem; color: var(--text-muted);"></span>
+            <a href="../index.html" style="color: var(--accent-color);">Voir le site</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 style="font-family: 'Anton';">Tableau de bord</h1>
+
+        <!-- Cartes de Statistiques -->
+        <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; margin-bottom: 2.5rem;">
+            <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">PAGES VUES (TOTAL)</span>
+                <h2 id="stat-total-views" style="font-family: 'Anton'; font-size: 2.2rem; margin: 0.5rem 0 0 0;">0</h2>
+            </div>
+
+            <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #2ed573;">
+                <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">VISITEURS UNIQUES</span>
+                <h2 id="stat-unique-visitors" style="font-family: 'Anton'; font-size: 2.2rem; margin: 0.5rem 0 0 0;">0</h2>
+            </div>
+
+            <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent-color);">
+                <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">VUES AUJOURD'HUI</span>
+                <h2 id="stat-today-views" style="font-family: 'Anton'; font-size: 2.2rem; margin: 0.5rem 0 0 0;">0</h2>
+            </div>
+        </section>
+
+        <!-- Section Offres d'emploi -->
+        <section id="tab-jobs" style="margin-top: 3rem;">
+            <h2 style="font-family: 'Anton'; margin-bottom: 1rem;">Gestion des Offres d'Emploi (Tous domaines)</h2>
+            
+            <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.08);">
+                <h3 style="margin-top:0; color: #fff;">Publier une nouvelle offre</h3>
+                <form id="add-job-form" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <input type="text" id="job-title" placeholder="Titre du poste (ex: Commercial, Chauffeur, Développeur...)" required style="flex:1; min-width: 250px; padding: 0.8rem; background: #121212; border: 1px solid #333; color: #fff; border-radius: 4px;">
+                        <input type="text" id="job-company" placeholder="Entreprise / Organisation" required style="flex:1; min-width: 200px; padding: 0.8rem; background: #121212; border: 1px solid #333; color: #fff; border-radius: 4px;">
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <input type="text" id="job-location" placeholder="Lieu (ex: Douala, Yaoundé, Remote...)" required style="flex:1; min-width: 180px; padding: 0.8rem; background: #121212; border: 1px solid #333; color: #fff; border-radius: 4px;">
+                        
+                        <select id="job-type" style="flex:1; min-width: 150px; padding: 0.8rem; background: #121212; border: 1px solid #333; color: #fff; border-radius: 4px;">
+                            <option value="Temps plein">Temps plein</option>
+                            <option value="Temps partiel">Temps partiel</option>
+                            <option value="Stage / Alternance">Stage / Alternance</option>
+                            <option value="Freelance / Prestation">Freelance / Prestation</option>
+                        </select>
+
+                        <select id="job-category" style="flex:1; min-width: 180px; padding: 0.8rem; background: #121212; border: 1px solid #333; color: #fff; border-radius: 4px;">
+                            <option value="Toute catégorie">Tous domaines / Général</option>
+                            <option value="Commerce & Vente">Commerce & Vente</option>
+                            <option value="Marketing & Com">Marketing & Com</option>
+                            <option value="Tech & Informatique">Tech & Informatique</option>
+                            <option value="Finance & Comptabilité">Finance & Comptabilité</option>
+                            <option value="Santé & Médical">Santé & Médical</option>
+                            <option value="Éducation & Formation">Éducation & Formation</option>
+                            <option value="Logistique & Transport">Logistique & Transport</option>
+                            <option value="Droit & Admin">Droit & Admin</option>
+                            <option value="Autre">Autre domaine</option>
+                        </select>
+                    </div>
+
+                    <input type="text" id="job-apply" placeholder="Lien direct pour postuler OU Adresse e-mail de réception" required style="padding: 0.8rem; background: #121212; border: 1px solid #333; color: #fff; border-radius: 4px;">
+
+                    <textarea id="job-description" rows="5" placeholder="Description du poste, missions et critères requis..." required style="padding: 0.8rem; background: #121212; border: 1px solid #333; color: #fff; border-radius: 4px;"></textarea>
+
+                    <button type="submit" style="background: var(--accent-color, #ff4757); color: #fff; padding: 0.8rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Publier l'offre d'emploi</button>
+                </form>
+            </div>
+
+            <h3>Offres d'emploi en ligne</h3>
+            <div id="admin-jobs-list" style="margin-top: 1rem;">
+                <p style="color: var(--text-muted);">Chargement des offres...</p>
+            </div>
+        </section>
+
+        <!-- Grille des articles -->
+        <div class="admin-grid">
+            <!-- Formulaire de création -->
+            <div class="card-form">
+                <h2>Nouvelle Publication Article</h2>
+                <form id="create-article-form" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label for="title">Titre de l'article *</label>
+                        <input type="text" id="title" required placeholder="ex: Le boom de la Fintech au Cameroun">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Catégorie *</label>
+                        <select id="category" required>
+                            <option value="TECH">TECH</option>
+                            <option value="FINANCE">FINANCE</option>
+                            <option value="ENTREPRENEURIAT">ENTREPRENEURIAT</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="image_url">Lien de l'image (URL)</label>
+                        <input type="url" id="image_url" placeholder="https://images.unsplash.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="body">Contenu *</label>
+                        <textarea id="body" rows="6" required placeholder="Rédigez l'article ici..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Publier l'article</button>
+                </form>
+                <div id="form-msg" style="margin-top: 1rem;"></div>
+            </div>
+
+            <!-- Liste des articles publiés -->
+            <div>
+                <h2>Articles récents</h2>
+                <div id="admin-articles-list" style="margin-top: 1rem;">
+                    <p>Chargement des articles...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Messages reçus -->
+        <section style="margin-top: 3rem; background-color: var(--bg-card); padding: 1.5rem; border-radius: 8px;">
+            <h2 style="font-family: 'Anton'; margin-bottom: 1rem;">Messages reçus via Contact</h2>
+            <div id="messages-list">
+                <p style="color: var(--text-muted);">Chargement des messages...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modale de modification d'article -->
+    <div id="edit-modal" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 1rem;">
+        <div style="background-color: var(--bg-card); padding: 2rem; border-radius: 8px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
+            <h2 style="font-family: 'Anton'; margin-bottom: 1rem;">Modifier l'article</h2>
+            <form id="edit-article-form">
+                <input type="hidden" id="edit-id">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="edit-title">Titre *</label>
+                    <input type="text" id="edit-title" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="edit-category">Catégorie *</label>
+                    <select id="edit-category" required>
+                        <option value="TECH">TECH</option>
+                        <option value="FINANCE">FINANCE</option>
+                        <option value="ENTREPRENEURIAT">ENTREPRENEURIAT</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="edit-image_url">URL de l'image</label>
+                    <input type="url" id="edit-image_url">
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="edit-body">Contenu *</label>
+                    <textarea id="edit-body" rows="6" required></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" onclick="closeEditModal()" style="padding: 0.6rem 1.2rem; background: #555; color: white; border: none; border-radius: 4px; cursor: pointer;">Annuler</button>
+                    <button type="submit" style="padding: 0.6rem 1.2rem; background: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

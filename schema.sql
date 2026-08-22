@@ -1,0 +1,19 @@
+DROP TABLE IF EXISTS contents;
+DROP TABLE IF EXISTS admins;
+
+CREATE TABLE admins (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE contents (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    image_url TEXT,
+    body TEXT NOT NULL,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT REFERENCES admins(id) ON DELETE SET NULL
+);
