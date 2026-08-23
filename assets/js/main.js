@@ -1,3 +1,4 @@
+const API_BASE_URL = 'https://fegmedia-backend.onrender.com/api';
 let allArticles = []; // Stockage local des articles récupérés
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -5,12 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFilters();
 });
 
-// Récupération initiale depuis l'API PHP
+// Récupération initiale depuis l'API PHP sur Render
 async function fetchArticles() {
     const container = document.getElementById('articles-container');
 
     try {
-        const response = await fetch('api/contents.php');
+        const response = await fetch(`${API_BASE_URL}/contents.php`);
         const result = await response.json();
 
         if (result.status === 'success') {
