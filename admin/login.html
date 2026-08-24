@@ -79,6 +79,47 @@
         </div>
     </main>
 
-    <script src="login.js"></script>
+    <div id="alert-msg"></div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const alertMsg = document.getElementById('alert-msg');
+            
+            alertMsg.style.color = '#fff';
+            alertMsg.textContent = 'Connexion en cours...';
+
+            try {
+                // Attention : si ton login.php est dans un autre dossier, ajuste ce chemin (ex: '../login.php')
+                const response = await fetch('login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    alertMsg.style.color = '#22c55e';
+                    alertMsg.textContent = 'Connexion réussie ! Redirection...';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.php';
+                    }, 1000);
+                } else {
+                    alertMsg.style.color = '#ef4444';
+                    alertMsg.textContent = data.message;
+                }
+            } catch (err) {
+                alertMsg.style.color = '#ef4444';
+                alertMsg.textContent = 'Erreur de connexion au serveur.';
+            }
+        });
+    </script>
+
 </body>
 </html>
