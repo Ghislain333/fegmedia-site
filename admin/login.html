@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FEGMEDIA - Connexion Admin</title>
@@ -66,7 +65,7 @@
             <form id="login-form">
                 <div class="form-group">
                     <label for="email">Adresse Email</label>
-                    <input type="email" id="email" required placeholder="admin@fegmedia.cm">
+                    <input type="email" id="email" required placeholder="admin@fegmedia.com">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
@@ -76,10 +75,6 @@
             </form>
 
             <div id="alert-msg"></div>
-        </div>
-    </main>
-
-    <div id="alert-msg"></div>
         </div>
     </main>
 
@@ -95,8 +90,7 @@
             alertMsg.textContent = 'Connexion en cours...';
 
             try {
-                // Attention : si ton login.php est dans un autre dossier, ajuste ce chemin (ex: '../login.php')
-                const response = await fetch('login.php', {
+                const response = await fetch('../login.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
