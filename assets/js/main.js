@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://fegmedia-backend.onrender.com/api';
+const API_BASE_URL = "https://fegmedia.kesug.com/api";
 let allArticles = []; // Stockage local des articles récupérés
 
 document.addEventListener('DOMContentLoaded', () => {

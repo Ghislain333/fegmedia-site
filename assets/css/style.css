@@ -73,11 +73,12 @@ nav a:hover, nav a.active {
     background: linear-gradient(135deg, #1E1E2E 0%, #2E5BFF 100%);
     border-radius: 12px;
     margin-bottom: 3rem;
+    
 }
 
 .hero h1 {
     font-family: 'Anton', sans-serif;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
 }
 
@@ -191,6 +192,7 @@ body {
         gap: 1rem;
         text-align: center;
         padding: 1rem;
+        font-size: 12px;
     }
 
     nav ul {
