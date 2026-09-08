@@ -73,14 +73,14 @@
     <script>
         const API_BASE_URL = "https://fegmedia.kesug.com/api";
         // Tracking visite
-        fetch('api/track_visit.php', {
+        fetch(`${API_BASE_URL}/track_visit.php`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ page: window.location.pathname })
         }).catch(err => console.error(err));
 
         // Chargement des 2 dernières offres d'emploi
-        fetch('api/get_jobs.php')
+        fetch(`${API_BASE_URL}/track_visit.php` )
             .then(res => res.json())
             .then(result => {
                 const container = document.getElementById('home-jobs-list');

@@ -278,7 +278,7 @@
     <script>
         const API_BASE_URL = "https://fegmedia.kesug.com/api";
         // Suivi des visites
-        fetch('api/track_visit.php', {
+       fetch(`${API_BASE_URL}/track_visit.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ page: window.location.pathname })
