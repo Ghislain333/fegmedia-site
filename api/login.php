@@ -15,7 +15,6 @@ require_once __DIR__ . '/../config/db.php';
 
 // Récupération des données JSON envoyées par la requête JS
 $input = json_decode(file_get_contents('php://input'), true);
-
 $email    = $input['email'] ?? '';
 $password = $input['password'] ?? '';
 

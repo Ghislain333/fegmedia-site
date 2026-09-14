@@ -78,11 +78,18 @@
         </div>
     </main>
 
-    <script>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        const SUPABASE_URL = 'https://mqxtnvryhasoxqfrnmxk.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_EyhsxGF8XLMUu0DcTXWzcQ_apjD27P9';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const alertMsg = document.getElementById('alert-msg');
             
@@ -90,16 +97,20 @@
             alertMsg.textContent = 'Connexion en cours...';
 
             try {
-                const API_BASE_URL = "https://fegmedia.kesug.com/api";
-                const response = await fetch('/api/login.php',{
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-                
-                const data = await response.json();
+                const { data: admins, error } = await supabase
+                    .from('admins')
+                    .select('*')
+                    .eq('email', email);
 
-                if (data.status === 'success') {
+                if (error) throw error;
+
+                if (!admins || admins.length === 0) {
+                    alertMsg.style.color = '#ef4444';
+                    alertMsg.textContent = 'Identifiants incorrects.';
+                    return;
+                }
+
+                if (password === 'AdminFeg2026!') {
                     alertMsg.style.color = '#22c55e';
                     alertMsg.textContent = 'Connexion réussie ! Redirection...';
                     setTimeout(() => {
@@ -107,9 +118,10 @@
                     }, 1000);
                 } else {
                     alertMsg.style.color = '#ef4444';
-                    alertMsg.textContent = data.message;
+                    alertMsg.textContent = 'Identifiants incorrects.';
                 }
             } catch (err) {
+                console.error("Détail de l'erreur :", err);
                 alertMsg.style.color = '#ef4444';
                 alertMsg.textContent = 'Erreur de connexion au serveur.';
             }
