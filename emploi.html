@@ -276,21 +276,17 @@
     </nav>
 
     <script>
-        const API_BASE_URL = "https://fegmedia.kesug.com/api";
-        // Suivi des visites
-       fetch(`${API_BASE_URL}/track_visit.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ page: window.location.pathname })
-        }).catch(err => console.error(err));
+     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        const SUPABASE_URL = 'https://mqxtnvryhasoxqfrnmxk.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_EyhsxGF8XLMUu0DcTXWzcQ_apjD27P9';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allJobs = [];
 
-        // Chargement des données
         document.addEventListener('DOMContentLoaded', async () => {
             await fetchJobs();
 
-            // Événements Filtres
             document.getElementById('search-input').addEventListener('input', filterAndRenderJobs);
             document.getElementById('category-filter').addEventListener('change', filterAndRenderJobs);
         });
@@ -298,11 +294,15 @@
         async function fetchJobs() {
             const container = document.getElementById('jobs-container');
             try {
-                const res = await fetch('api/get_jobs.php');
-                const result = await res.json();
+                const { data: jobs, error } = await supabase
+                    .from('jobs')
+                    .select('*')
+                    .order('id', { ascending: false });
 
-                if (result.status === 'success' && result.data.length > 0) {
-                    allJobs = result.data;
+                if (error) throw error;
+
+                if (jobs && jobs.length > 0) {
+                    allJobs = jobs;
                     filterAndRenderJobs();
                 } else {
                     container.innerHTML = `
@@ -396,5 +396,6 @@
             }
         }
     </script>
+    <script type="module"></script>
 </body>
 </html>

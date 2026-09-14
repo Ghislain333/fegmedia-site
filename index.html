@@ -68,25 +68,30 @@
         </div>
     </footer>
 
-    <script src="assets/js/main.js"></script>
+    
 
-    <script>
-        const API_BASE_URL = "https://fegmedia.kesug.com/api";
-        // Tracking visite
-        fetch(`${API_BASE_URL}/track_visit.php`,{
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ page: window.location.pathname })
-        }).catch(err => console.error(err));
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-        // Chargement des 2 dernières offres d'emploi
-        fetch(`${API_BASE_URL}/track_visit.php` )
-            .then(res => res.json())
-            .then(result => {
-                const container = document.getElementById('home-jobs-list');
-                if (result.status === 'success' && result.data.length > 0) {
-                    container.innerHTML = '';
-                    result.data.slice(0, 2).forEach(job => {
+        const SUPABASE_URL = 'https://mqxtnvryhasoxqfrnmxk.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_EyhsxGF8XLMUu0DcTXWzcQ_apjD27P9';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Charger les offres d'emploi récentes sur l'accueil
+            const jobsContainer = document.getElementById('home-jobs-list');
+            try {
+                const { data: jobs, error } = await supabase
+                    .from('jobs')
+                    .select('*')
+                    .order('id', { ascending: false })
+                    .limit(2);
+
+                if (error) throw error;
+
+                if (jobs && jobs.length > 0) {
+                    jobsContainer.innerHTML = '';
+                    jobs.forEach(job => {
                         const item = document.createElement('div');
                         item.style.cssText = 'padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; gap: 1rem;';
                         item.innerHTML = `
@@ -96,16 +101,75 @@
                             </div>
                             <a href="emploi.html" style="background: rgba(255,71,87,0.15); color: #ff4757; padding: 0.4rem 0.8rem; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-weight: bold; white-space: nowrap;">Postuler</a>
                         `;
-                        container.appendChild(item);
+                        jobsContainer.appendChild(item);
                     });
                 } else {
-                    container.innerHTML = '<p style="color: #888; font-size: 0.9rem;">Aucune offre disponible actuellement.</p>';
+                    jobsContainer.innerHTML = '<p style="color: #888; font-size: 0.9rem;">Aucune offre disponible actuellement.</p>';
                 }
-            }).catch(() => {
-                document.getElementById('home-jobs-list').innerHTML = '<p style="color: #888; font-size: 0.9rem;">Impossible de charger les offres.</p>';
-            });
-    </script>
+            } catch (err) {
+                jobsContainer.innerHTML = '<p style="color: #888; font-size: 0.9rem;">Impossible de charger les offres.</p>';
+            }
 
+            // 2. Charger les articles sur l'accueil
+            const articlesContainer = document.getElementById('articles-container');
+            try {
+                const { data: articles, error } = await supabase
+                    .from('contents')
+                    .select('*')
+                    .order('id', { ascending: false });
+
+                if (error) throw error;
+
+                if (articles && articles.length > 0) {
+                    articlesContainer.innerHTML = '';
+                    articles.forEach(art => {
+                        const card = document.createElement('div');
+                        card.className = 'article-card';
+                        card.setAttribute('data-category', art.category);
+                        card.style.cssText = 'background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column;';
+                        
+                        const defaultImg = 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&q=80';
+                        const imgSrc = art.image_url ? art.image_url : defaultImg;
+
+                        card.innerHTML = `
+                            <img src="${imgSrc}" alt="${art.title}" style="width: 100%; height: 180px; object-fit: cover;">
+                            <div style="padding: 1.2rem; display: flex; flex-direction: column; flex: 1;">
+                                <span class="badge" style="font-size: 0.7rem; align-self: flex-start; margin-bottom: 0.5rem;">${art.category}</span>
+                                <h3 style="font-size: 1.1rem; margin-bottom: 0.8rem; color: #fff;">${art.title}</h3>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; flex: 1; margin-bottom: 1rem;">${art.body.substring(0, 100)}...</p>
+                                <a href="article.html?id=${art.id}" style="color: var(--accent-color); text-decoration: none; font-weight: bold; font-size: 0.9rem;">Lire la suite →</a>
+                            </div>
+                        `;
+                        articlesContainer.appendChild(card);
+                    });
+
+                    // Gestion des filtres par catégorie
+                    const filterButtons = document.querySelectorAll('.filter-btn');
+                    filterButtons.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            filterButtons.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            const category = btn.getAttribute('data-category');
+
+                            const cards = articlesContainer.querySelectorAll('.article-card');
+                            cards.forEach(card => {
+                                if (category === 'ALL' || card.getAttribute('data-category') === category) {
+                                    card.style.display = 'flex';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        });
+                    });
+
+                } else {
+                    articlesContainer.innerHTML = '<p style="color: var(--text-muted);">Aucune publication pour le moment.</p>';
+                }
+            } catch (err) {
+                articlesContainer.innerHTML = '<p style="color: red;">Impossible de charger les publications pour le moment.</p>';
+            }
+        });
+    </script>
     <!-- Navigation Mobile Bottom Bar -->
     <nav class="bottom-nav">
         <a href="index.html" class="active">
