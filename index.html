@@ -64,11 +64,8 @@
     <footer>
         <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto;">
             <p>&copy; 2026 FEGMEDIA. Tous droits réservés.</p>
-            
         </div>
     </footer>
-
-    
 
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -78,6 +75,14 @@
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // Suivi des visites (discret)
+            let visitorId = localStorage.getItem('fegmedia_visitor_id');
+            if (!visitorId) {
+                visitorId = 'vis_' + Math.random().toString(36).substring(2) + Date.now();
+                localStorage.setItem('fegmedia_visitor_id', visitorId);
+            }
+            supabase.from('visits').insert([{ page: window.location.pathname, visitor_id: visitorId }]).then();
+
             // 1. Charger les offres d'emploi récentes sur l'accueil
             const jobsContainer = document.getElementById('home-jobs-list');
             try {
@@ -170,6 +175,7 @@
             }
         });
     </script>
+
     <!-- Navigation Mobile Bottom Bar -->
     <nav class="bottom-nav">
         <a href="index.html" class="active">

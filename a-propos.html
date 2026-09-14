@@ -170,5 +170,20 @@
         <span>Contact</span>
     </a>
 </nav>
+
+
+
+<script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+    const supabase = createClient('https://mqxtnvryhasoxqfrnmxk.supabase.co', 'sb_publishable_EyhsxGF8XLMUu0DcTXWzcQ_apjD27P9');
+
+    let visitorId = localStorage.getItem('fegmedia_visitor_id');
+    if (!visitorId) {
+        visitorId = 'vis_' + Math.random().toString(36).substring(2) + Date.now();
+        localStorage.setItem('fegmedia_visitor_id', visitorId);
+    }
+
+    supabase.from('visits').insert([{ page: window.location.pathname, visitor_id: visitorId }]).then();
+</script>
 </body>
 </html>

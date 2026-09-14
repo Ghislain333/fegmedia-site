@@ -1,3 +1,9 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL = 'https://mqxtnvryhasoxqfrnmxk.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_EyhsxGF8XLMUu0DcTXWzcQ_apjD27P9';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -13,23 +19,18 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
     msgDiv.textContent = "Envoi en cours...";
 
     try {
-        const response = await fetch('api/send_message.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        });
+        const { error } = await supabase
+            .from('messages')
+            .insert([formData]);
 
-        const result = await response.json();
+        if (error) throw error;
 
-        if (result.status === 'success') {
-            msgDiv.style.color = "#2ed573";
-            msgDiv.textContent = result.message;
-            document.getElementById('contact-form').reset();
-        } else {
-            msgDiv.style.color = "#ff4757";
-            msgDiv.textContent = result.message;
-        }
+        msgDiv.style.color = "#2ed573";
+        msgDiv.textContent = "Message envoyé avec succès ! Nous vous répondrons bientôt.";
+        document.getElementById('contact-form').reset();
+        
     } catch (error) {
+        console.error(error);
         msgDiv.style.color = "#ff4757";
         msgDiv.textContent = "Erreur lors de l'envoi du message.";
     }

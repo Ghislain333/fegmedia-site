@@ -214,5 +214,16 @@ async function loadAdminMessages() {
 }
 
 async function loadAdminStats() {
-    // Optionnel : gestion des stats via Supabase si la table existe
+    try {
+        const { data, error } = await supabase.rpc('get_visit_stats');
+        if (error) throw error;
+
+        if (data) {
+            document.getElementById('stat-total-views').textContent = data.total_views || 0;
+            document.getElementById('stat-unique-visitors').textContent = data.unique_visitors || 0;
+            document.getElementById('stat-today-views').textContent = data.today_views || 0;
+        }
+    } catch (e) {
+        console.error("Erreur stats :", e);
+    }
 }
