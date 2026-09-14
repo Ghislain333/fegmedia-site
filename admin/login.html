@@ -110,7 +110,9 @@
                     return;
                 }
 
-                if (password === 'AdminFeg2026!') {
+                // Vérification directe avec la valeur stockée dans la base Supabase
+                if (admins[0].password_hash === password) {
+                    localStorage.setItem('fegmedia_admin', JSON.stringify({ email: admins[0].email }));
                     alertMsg.style.color = '#22c55e';
                     alertMsg.textContent = 'Connexion réussie ! Redirection...';
                     setTimeout(() => {

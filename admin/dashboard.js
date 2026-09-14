@@ -1,25 +1,27 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL = 'https://mqxtnvryhasoxqfrnmxk.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_EyhsxGF8XLMUu0DcTXWzcQ_apjD27P9';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 let loadedArticles = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Vérification de la session Admin
-    try {
-        const res = await fetch('../api/check_auth.php');
-        if (!res.ok) {
-            window.location.href = 'login.html';
-            return;
-        }
-        const data = await res.json();
-        document.getElementById('user-email').textContent = data.admin.email;
-    } catch (e) {
+    // 1. Vérification de la session Admin via localStorage
+    const adminSession = localStorage.getItem('fegmedia_admin');
+    if (!adminSession) {
         window.location.href = 'login.html';
         return;
     }
+    const adminData = JSON.parse(adminSession);
+    const emailElem = document.getElementById('user-email');
+    if (emailElem) emailElem.textContent = adminData.email;
 
-    // 2. Chargements initiaux des données
+    // 2. Chargements initiaux des données depuis Supabase
     loadAdminArticles();
     loadAdminMessages();
     loadAdminStats();
-    loadAdminJobs(); // Chargement direct des offres d'emploi
+    loadAdminJobs();
 
     // 3. Soumission du formulaire de création d'article
     document.getElementById('create-article-form').addEventListener('submit', async (e) => {
@@ -29,66 +31,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             title: document.getElementById('title').value,
             category: document.getElementById('category').value,
             image_url: document.getElementById('image_url').value,
-            body: document.getElementById('body').value
+            body: document.getElementById('body').value,
+            published_at: new Date().toISOString()
         };
 
         try {
-            const response = await fetch('../api/create_content.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(articleData)
-            });
+            const { error } = await supabase.from('contents').insert([articleData]);
+            if (error) throw error;
 
-            const result = await response.json();
-            if (result.status === 'success') {
-                formMsg.style.color = '#2ed573';
-                formMsg.textContent = result.message;
-                document.getElementById('create-article-form').reset();
-                loadAdminArticles();
-            } else {
-                formMsg.style.color = '#ff4757';
-                formMsg.textContent = result.message;
-            }
+            formMsg.style.color = '#2ed573';
+            formMsg.textContent = 'Article publié avec succès !';
+            document.getElementById('create-article-form').reset();
+            loadAdminArticles();
         } catch (error) {
+            console.error(error);
             formMsg.style.color = '#ff4757';
             formMsg.textContent = "Erreur lors de l'envoi.";
         }
     });
 
-    // 4. Soumission du formulaire d'édition d'article
-    const editForm = document.getElementById('edit-article-form');
-    if (editForm) {
-        editForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const editData = {
-                id: document.getElementById('edit-id').value,
-                title: document.getElementById('edit-title').value,
-                category: document.getElementById('edit-category').value,
-                image_url: document.getElementById('edit-image_url').value,
-                body: document.getElementById('edit-body').value
-            };
-
-            try {
-                const res = await fetch('../api/update_content.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(editData)
-                });
-                const result = await res.json();
-
-                if (result.status === 'success') {
-                    closeEditModal();
-                    loadAdminArticles();
-                } else {
-                    alert(result.message);
-                }
-            } catch (e) {
-                alert("Erreur lors de la mise à jour.");
-            }
-        });
-    }
-
-    // 5. Soumission du formulaire de création d'emploi
+    // 4. Soumission du formulaire de création d'emploi
     document.getElementById('add-job-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -103,39 +65,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         try {
-            const res = await fetch('../api/create_job.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await res.json();
+            const { error } = await supabase.from('jobs').insert([payload]);
+            if (error) throw error;
 
-            if (result.status === 'success') {
-                alert('Offre créée avec succès !');
-                document.getElementById('add-job-form').reset();
-                loadAdminJobs();
-            } else {
-                alert('Erreur: ' + result.message);
-            }
+            alert('Offre créée avec succès !');
+            document.getElementById('add-job-form').reset();
+            loadAdminJobs();
         } catch (err) {
+            console.error(err);
             alert('Erreur lors de la publication.');
         }
     });
 });
 
-// Récupération et affichage de la liste des articles
+// Récupération des articles
 async function loadAdminArticles() {
     const listContainer = document.getElementById('admin-articles-list');
     if (!listContainer) return;
 
     try {
-        const res = await fetch('../api/contents.php');
-        const result = await res.json();
+        const { data: articles, error } = await supabase
+            .from('contents')
+            .select('*')
+            .order('id', { ascending: false });
 
-        if (result.status === 'success' && result.data.length > 0) {
-            loadedArticles = result.data;
+        if (error) throw error;
+
+        if (articles && articles.length > 0) {
+            loadedArticles = articles;
             listContainer.innerHTML = '';
-            result.data.forEach(art => {
+            articles.forEach(art => {
                 const item = document.createElement('div');
                 item.style.backgroundColor = 'var(--bg-card)';
                 item.style.padding = '1rem';
@@ -151,9 +110,6 @@ async function loadAdminArticles() {
                             <small style="color: var(--text-muted);">Publié le ${new Date(art.published_at).toLocaleDateString('fr-FR')}</small>
                         </div>
                         <div style="display: flex; gap: 0.5rem; white-space: nowrap;">
-                            <button onclick="openEditModal(${art.id})" style="background-color: #ffa500; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">
-                                Modifier
-                            </button>
                             <button onclick="deleteArticle(${art.id})" style="background-color: #ff4757; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">
                                 Supprimer
                             </button>
@@ -170,18 +126,18 @@ async function loadAdminArticles() {
     }
 }
 
-// Fonction pour charger la liste des offres d'emploi dans l'admin
+// Récupération des offres d'emploi
 async function loadAdminJobs() {
     const container = document.getElementById('admin-jobs-list');
     if (!container) return;
 
     try {
-        const res = await fetch('../api/get_jobs.php');
-        const result = await res.json();
+        const { data: jobs, error } = await supabase.from('jobs').select('*').order('id', { ascending: false });
+        if (error) throw error;
 
-        if (result.status === 'success' && result.data.length > 0) {
+        if (jobs && jobs.length > 0) {
             container.innerHTML = '';
-            result.data.forEach(job => {
+            jobs.forEach(job => {
                 const item = document.createElement('div');
                 item.style.cssText = 'background: #14151a; padding: 1rem; border-radius: 6px; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05);';
                 item.innerHTML = `
@@ -201,96 +157,48 @@ async function loadAdminJobs() {
     }
 }
 
-// Supprimer une offre d'emploi
-async function deleteJob(id) {
+// Suppression d'une offre
+window.deleteJob = async function(id) {
     if (!confirm('Voulez-vous vraiment supprimer cette offre ?')) return;
-
     try {
-        const res = await fetch('../api/delete_job.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id })
-        });
-        const result = await res.json();
-
-        if (result.status === 'success') {
-            loadAdminJobs();
-        } else {
-            alert('Erreur: ' + result.message);
-        }
+        const { error } = await supabase.from('jobs').delete().eq('id', id);
+        if (error) throw error;
+        loadAdminJobs();
     } catch (err) {
         alert('Erreur lors de la suppression.');
     }
-}
+};
 
-// Utilitaires Modale
-function openEditModal(id) {
-    const article = loadedArticles.find(a => a.id == id);
-    if (!article) return;
-
-    document.getElementById('edit-id').value = article.id;
-    document.getElementById('edit-title').value = article.title;
-    document.getElementById('edit-category').value = article.category;
-    document.getElementById('edit-image_url').value = article.image_url || '';
-    document.getElementById('edit-body').value = article.body;
-
-    document.getElementById('edit-modal').style.display = 'flex';
-}
-
-function closeEditModal() {
-    const modal = document.getElementById('edit-modal');
-    if (modal) modal.style.display = 'none';
-}
-
-// Supprimer un article
-async function deleteArticle(id) {
+// Suppression d'un article
+window.deleteArticle = async function(id) {
     if (!confirm('Voulez-vous vraiment supprimer cet article ?')) return;
-
     try {
-        const res = await fetch('../api/delete_content.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
-        });
-
-        const result = await res.json();
-        if (result.status === 'success') {
-            loadAdminArticles();
-        } else {
-            alert(result.message);
-        }
+        const { error } = await supabase.from('contents').delete().eq('id', id);
+        if (error) throw error;
+        loadAdminArticles();
     } catch (e) {
         alert("Erreur lors de la suppression.");
     }
-}
+};
 
-// Messages et Stats
 async function loadAdminMessages() {
     const listContainer = document.getElementById('messages-list');
     if (!listContainer) return;
-
     try {
-        const res = await fetch('../api/get_messages.php');
-        const result = await res.json();
-
-        if (result.status === 'success' && result.data.length > 0) {
+        const { data: messages, error } = await supabase.from('messages').select('*').order('id', { ascending: false });
+        if (error) throw error;
+        if (messages && messages.length > 0) {
             listContainer.innerHTML = '';
-            result.data.forEach(msg => {
+            messages.forEach(msg => {
                 const item = document.createElement('div');
                 item.style.backgroundColor = '#121212';
                 item.style.padding = '1rem';
                 item.style.marginBottom = '1rem';
                 item.style.borderRadius = '6px';
                 item.style.borderLeft = '3px solid var(--accent-color)';
-
-                const dateFormatted = new Date(msg.created_at).toLocaleDateString('fr-FR', {
-                    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-                });
-
                 item.innerHTML = `
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                         <strong>${msg.name} (${msg.email})</strong>
-                        <small style="color: var(--text-muted);">${dateFormatted}</small>
                     </div>
                     <div style="font-weight: 600; color: var(--accent-color); margin-bottom: 0.4rem;">Sujet : ${msg.subject}</div>
                     <p style="color: var(--text-light); margin: 0; white-space: pre-line;">${msg.message}</p>
@@ -306,20 +214,5 @@ async function loadAdminMessages() {
 }
 
 async function loadAdminStats() {
-    try {
-        const res = await fetch('../api/get_stats.php');
-        const result = await res.json();
-
-        if (result.status === 'success') {
-            const totalViews = document.getElementById('stat-total-views');
-            const uniqueVisitors = document.getElementById('stat-unique-visitors');
-            const todayViews = document.getElementById('stat-today-views');
-
-            if (totalViews) totalViews.textContent = result.data.total_views;
-            if (uniqueVisitors) uniqueVisitors.textContent = result.data.unique_visitors;
-            if (todayViews) todayViews.textContent = result.data.today_views;
-        }
-    } catch (e) {
-        console.error("Erreur lors du chargement des statistiques :", e);
-    }
+    // Optionnel : gestion des stats via Supabase si la table existe
 }
