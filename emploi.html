@@ -336,7 +336,8 @@
             });
         }
 
-        function toggleDescription(btn) {
+        // Fonction globale attachée à window pour gérer l'affichage de la description
+        window.toggleDescription = function(btn) {
             const desc = btn.nextElementSibling;
             if (desc.classList.contains('open')) {
                 desc.classList.remove('open');
@@ -345,7 +346,8 @@
                 desc.classList.add('open');
                 btn.textContent = 'Masquer les détails ↑';
             }
-        }
+        };
     </script>
+    
 </body>
 </html>
