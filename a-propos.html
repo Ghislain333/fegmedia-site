@@ -7,183 +7,142 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .about-hero {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 2.5rem;
             text-align: center;
-            padding: 3rem 1rem;
-            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-dark) 100%);
-            border-radius: 8px;
-            margin-bottom: 3rem;
         }
-        .about-hero h1 {
-            font-family: 'Anton', sans-serif;
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-        }
-        .about-hero p {
-            color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-        }
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        .value-card {
+        .about-content {
             background-color: var(--bg-card);
-            padding: 1.8rem;
-            border-radius: 8px;
-            border-top: 3px solid var(--primary-color);
-        }
-        .value-card h3 {
-            color: var(--accent-color);
-            margin-bottom: 0.8rem;
-        }
-        .stats-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 2rem;
-            background-color: var(--bg-card);
+            border-radius: 12px;
             padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+        .about-content h2 {
+            font-family: 'Anton', sans-serif;
+            color: #fff;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+        .about-content h2:first-of-type {
+            margin-top: 0;
+        }
+        .about-content p {
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+        .stat-box {
+            background: #121212;
+            padding: 1.5rem;
             border-radius: 8px;
             text-align: center;
-            margin-top: 3rem;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .stat-item h2 {
+        .stat-box h3 {
             font-family: 'Anton', sans-serif;
-            font-size: 2.5rem;
-            color: var(--primary-color);
+            font-size: 2rem;
+            color: var(--primary-color, #ff4757);
+            margin-bottom: 0.3rem;
+        }
+        .stat-box p {
+            font-size: 0.85rem;
+            margin: 0;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
 
+    <!-- En-tête -->
     <header>
         <a href="index.html" class="logo">FEG<span>MEDIA</span></a>
         <nav>
             <a href="index.html">Accueil</a>
+            <a href="emploi.html">Emplois</a>
             <a href="a-propos.html" class="active">À propos</a>
             <a href="contact.html">Contact</a>
         </nav>
     </header>
 
-    <main class="container">
-        <!-- Section d'introduction -->
-        <section class="about-hero">
-            <h1>Propulser l'Innovation & l'Économie</h1>
-            <p>
-                FEGMEDIA est la plateforme d'information de référence dédiée à l'actualité Tech, 
-                aux stratégies Financières et à l'Écosystème Entrepreneuriat au Cameroun et en Afrique.
-            </p>
-        </section>
-
-        <!-- Piliers & Missions -->
-        <section>
-            <h2 class="section-title">Nos Piliers Éditoriaux</h2>
-            <div class="values-grid">
-                <div class="value-card">
-                    <h3>⚡ Tech & Innovation</h3>
-                    <p>
-                        Décryptage des tendances technologiques, de la transformation digitale 
-                        et des startups qui façonnent le futur du continent.
-                    </p>
-                </div>
-                <div class="value-card">
-                    <h3>📈 Finance & Marchés</h3>
-                    <p>
-                        Analyses économiques, conseils en gestion d'investissements et actualités 
-                        des marchés financiers accessibles à tous.
-                    </p>
-                </div>
-                <div class="value-card">
-                    <h3>🚀 Entrepreneuriat</h3>
-                    <p>
-                        Mise en lumière des fondateurs, guides pratiques et retours d'expérience 
-                        pour accompagner les bâtisseurs de demain.
-                    </p>
-                </div>
-                <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">🪙 Économie</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Suivi des dynamiques macroéconomiques, des politiques de développement et des enjeux commerciaux régionaux et internationaux.</p>
-            </div>
-            </div>
-        </section>
-
-        <!-- Vision -->
-        <section style="margin-top: 4rem;">
-            <div style="background-color: var(--bg-card); padding: 2.5rem; border-radius: 8px;">
-                <h2 style="font-family: 'Anton'; margin-bottom: 1rem;">Notre Vision</h2>
-                <p style="color: var(--text-light); line-height: 1.8;">
-                    Nous croyons fermement que l'accès à une information précise et à forte valeur ajoutée 
-                    est la clé de voûte de la réussite économique. FEGMEDIA s'engage à fournir du contenu analytique, 
-                    impartial et orienté vers l'action pour soutenir les décideurs, investisseurs et jeunes entrepreneurs.
-                </p>
-            </div>
-        </section>
-
-        <!-- Impact -->
-        <div class="stats-container">
-            <div class="stat-item">
-                <h2>4</h2>
-                <p style="color: var(--text-muted);">Secteurs Clés</p>
-            </div>
-            <div class="stat-item">
-                <h2>100%</h2>
-                <p style="color: var(--text-muted);">Orienté Solutions</p>
-            </div>
-            <div class="stat-item">
-                <h2>24/7</h2>
-                <p style="color: var(--text-muted);">Veille Stratégique</p>
-            </div>
+    <!-- Contenu Principal -->
+    <main class="container" style="max-width: 900px; padding: 2.5rem 1rem;">
+        
+        <div class="about-hero">
+            <span class="badge" style="font-size: 0.75rem; margin-bottom: 1rem; display: inline-block;">NOTRE MISSION</span>
+            <h1 style="font-family: 'Anton', sans-serif; font-size: 2.5rem; color: #fff; letter-spacing: 0.5px; margin-bottom: 1rem;">Décrypter l'avenir technologique et économique</h1>
+            <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">FEGMEDIA est le portail de référence pour comprendre les dynamiques de l'innovation, de la finance et de l'entrepreneuriat.</p>
         </div>
-    </main>
-  
 
+        <div class="about-content">
+            <h2>Notre Vision</h2>
+            <p>Dans un monde en perpétuelle mutation, l'information stratégique est le premier levier de décision. FEGMEDIA s'engage à fournir des analyses incisives, des décryptages rigoureux et un suivi permanent des tendances qui façonnent les marchés de demain.</p>
+
+            <h2>Ce que nous traitons</h2>
+            <p>Notre ligne éditoriale s'articule autour de piliers clés indispensables aux acteurs de l'écosystème moderne :</p>
+            <ul style="padding-left: 1.2rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <li><strong style="color: #fff;">Tech & Innovation :</strong> Les avancées logicielles, l'intelligence artificielle et l'impact du numérique.</li>
+                <li><strong style="color: #fff;">Finance & Économie :</strong> Les mouvements du marché, les investissements et la structuration financière.</li>
+                <li><strong style="color: #fff;">Entrepreneuriat :</strong> Les retours d'expérience, la croissance des structures et le développement des talents.</li>
+            </ul>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>100%</h3>
+                    <p>Engagé & Indépendant</p>
+                </div>
+                <div class="stat-box">
+                    <h3>24/7</h3>
+                    <p>Veille & Actualités</p>
+                </div>
+                <div class="stat-box">
+                    <h3>1</h3>
+                    <p>Vision Stratégique</p>
+                </div>
+            </div>
+
+            <h2>Une passerelle vers l'emploi</h2>
+            <p>Parce que le développement d'un écosystème passe aussi par ses talents, FEGMEDIA intègre un espace dédié aux opportunités professionnelles, connectant directement les meilleurs profils aux organisations innovantes.</p>
+        </div>
+
+    </main>
+
+    <!-- Pied de page -->
     <footer>
-        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
             <p>&copy; 2026 FEGMEDIA. Tous droits réservés.</p>
         </div>
     </footer>
-<script>
-    const API_BASE_URL = "https://fegmedia.kesug.com/api";
-    fetch(`${API_BASE_URL}/track_visit.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ page: window.location.pathname })
-    }).catch(err => console.error(err));
-</script>
 
-<!-- Barre de Navigation Mobile Fixe (Bottom Bar) -->
-<nav class="bottom-nav">
-    <a href="index.html" class="active">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        <span>Accueil</span>
-    </a>
-    <a href="a-propos.html">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        <span>À propos</span>
-    </a>
-    <a href="contact.html">
-        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        <span>Contact</span>
-    </a>
-</nav>
-
-
-
-<script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-    const supabase = createClient('https://mqxtnvryhasoxqfrnmxk.supabase.co', 'sb_publishable_EyhsxGF8XLMUu0DcTXWzcQ_apjD27P9');
-
-    let visitorId = localStorage.getItem('fegmedia_visitor_id');
-    if (!visitorId) {
-        visitorId = 'vis_' + Math.random().toString(36).substring(2) + Date.now();
-        localStorage.setItem('fegmedia_visitor_id', visitorId);
-    }
-
-    supabase.from('visits').insert([{ page: window.location.pathname, visitor_id: visitorId }]).then();
-</script>
+    <!-- Navigation Mobile Bottom Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Accueil</span>
+        </a>
+        <a href="emploi.html">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+            <span>Emplois</span>
+        </a>
+        <a href="a-propos.html" class="active">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>À propos</span>
+        </a>
+        <a href="contact.html">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span>Contact</span>
+        </a>
+    </nav>
 </body>
 </html>

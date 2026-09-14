@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadAdminMessages();
     loadAdminStats();
     loadAdminJobs();
+    fetchSubscribersAdmin(); // <--- Appel de la fonction abonnés ici
 
     // 3. Soumission du formulaire de création d'article
     document.getElementById('create-article-form').addEventListener('submit', async (e) => {
@@ -225,5 +226,46 @@ async function loadAdminStats() {
         }
     } catch (e) {
         console.error("Erreur stats :", e);
+    }
+} // <--- Accolade fermante bien placée ici
+
+// Fonction pour récupérer et afficher les abonnés dans le dashboard admin
+async function fetchSubscribersAdmin() {
+    const tbody = document.getElementById('subscribers-table-body');
+    if (!tbody) return;
+
+    try {
+        const { data: subscribers, error } = await supabase
+            .from('subscribers')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (subscribers && subscribers.length > 0) {
+            tbody.innerHTML = '';
+            subscribers.forEach(sub => {
+                const dateFormatted = new Date(sub.created_at).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                tr.innerHTML = `
+                    <td style="padding: 1rem; color: #fff; font-size: 0.9rem;">${sub.email}</td>
+                    <td style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem;">${dateFormatted}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="2" style="padding: 1rem; color: var(--text-muted); text-align: center;">Aucun abonné pour le moment.</td></tr>`;
+        }
+    } catch (err) {
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="2" style="padding: 1rem; color: #ff4757; text-align: center;">Erreur lors du chargement des abonnés.</td></tr>`;
     }
 }
