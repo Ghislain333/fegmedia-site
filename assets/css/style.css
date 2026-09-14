@@ -16,6 +16,12 @@
     box-sizing: border-box;
 }
 
+
+
+
+
+
+
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--bg-dark);
@@ -260,6 +266,16 @@ body {
     background-color: #0b0c10;
     color: #e0e0e0;
 }
+
+@media (max-width: 768px) {
+    header {
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8)), url('https://images.pexels.com/photos/4158/apple-iphone-smartphone-desk.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
 
 /* Header & Nav Desktop de base */
 .site-header {
